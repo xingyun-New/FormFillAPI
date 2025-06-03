@@ -1,0 +1,913 @@
+app:
+  description: 根据知识库的form 问题填写form表单
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: Form_fill
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.25@2b6f549753c8fe1b8d0bda620eb0611b549d6d809da691baf0692ee75f6c507f
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: true
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      autoPlay: enabled
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1748345844819-source-1748348449946-target
+      selected: false
+      source: '1748345844819'
+      sourceHandle: source
+      target: '1748348449946'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: llm-source-1748433687461-target
+      selected: false
+      source: llm
+      sourceHandle: source
+      target: '1748433687461'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1748350650583-source-1748583981526-target
+      selected: false
+      source: '1748350650583'
+      sourceHandle: source
+      target: '1748583981526'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1748433687461-source-1748563945064-target
+      selected: false
+      source: '1748433687461'
+      sourceHandle: source
+      target: '1748563945064'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1748563945064-false-answer-target
+      selected: false
+      source: '1748563945064'
+      sourceHandle: 'false'
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1748588286497-source-1748350650583-target
+      selected: false
+      source: '1748588286497'
+      sourceHandle: source
+      target: '1748350650583'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 1748563945064-true-1748588286497-target
+      selected: false
+      source: '1748563945064'
+      sourceHandle: 'true'
+      target: '1748588286497'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1748583981526-source-1748699824262-target
+      selected: false
+      source: '1748583981526'
+      sourceHandle: source
+      target: '1748699824262'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1748699824262-source-1748350879064-target
+      selected: false
+      source: '1748699824262'
+      sourceHandle: source
+      target: '1748350879064'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1748794705793-1-llm-target
+      selected: false
+      source: '1748794705793'
+      sourceHandle: '1'
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1748794705793-2-1748794909275-target
+      selected: false
+      source: '1748794705793'
+      sourceHandle: '2'
+      target: '1748794909275'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: llm
+      id: 1748794909275-source-17487950265870-target
+      selected: false
+      source: '1748794909275'
+      sourceHandle: source
+      target: '17487950265870'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 17487950265870-source-1748795164275-target
+      selected: false
+      source: '17487950265870'
+      sourceHandle: source
+      target: '1748795164275'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1748794705793-1748794857495-1748795759854-target
+      selected: false
+      source: '1748794705793'
+      sourceHandle: '1748794857495'
+      target: '1748795759854'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1748795759854-source-1748795296107-target
+      selected: false
+      source: '1748795759854'
+      sourceHandle: source
+      target: '1748795296107'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1748348449946-source-1748797660046-target
+      source: '1748348449946'
+      sourceHandle: source
+      target: '1748797660046'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: question-classifier
+      id: 1748797660046-source-1748794705793-target
+      source: '1748797660046'
+      sourceHandle: source
+      target: '1748794705793'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: form_name
+          max_length: 5
+          options:
+          - 员工信息表
+          - 客户登记表
+          required: true
+          type: select
+          variable: form_name
+      height: 89
+      id: '1748345844819'
+      position:
+        x: 61.524404562941754
+        y: 25.5177976835582
+      positionAbsolute:
+        x: 61.524404562941754
+        y: 25.5177976835582
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1748348449946'
+          - result
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen3-235b-a22b
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: b97590eb-984b-459d-837f-e128cc1db222
+          role: system
+          text: "作为提问专家，你需要根据用户提供的回答判断是否已完整回答表单中的所有问题。若未完成，请根据知识库中未回答的内容逐一生成后续问题。\n\
+            用户的回答是：{{#sys.query#}}\n表单问题如下：\n{{#context#}}\n请严格按照以下步骤操作：\n1. 检查用户提供的答案是否覆盖知识库中所有问题。\n\
+            2. 若存在未回答的问题，从知识库中提取未回答的表单问题。\n3. 根据未回答的问题生成后续问题，确保问题顺序与知识库一致。\n4. 输出结果为纯文本格式的后续问题，并且不包含坐标\n\
+            5.如果全部问题已经回答，以json格式输出全部答案，不要使用markdown标识 '''json ''' 包裹数据,json数据内容包含”formName“:{{#1748345844819.form_name#}}\
+            \  和 \"formContent\":全部问题的答案和对应的坐标参考知识库中对应的坐标信息。同时在最后追加“调查结束”四个字。回复的内容严格按照下面的json格式，不加任何修饰和解释性词语。\n\
+            json 样例：\n{\n  \"formName\": \"员工信息表\",\n  \"formContent\": {\n    \"\
+            row3\": {\n      \"col2\": \"aaaaa\"\n    },\n   \"row4\": {\n      \"\
+            col2\": \"男\"\n    }\n  }\n}\n6.必须使用亲切礼貌语言向用户提问\n8.第一次询问将知识库中抽出的所有问题一起展示给用户\n\
+            9.检验每个问题的回答是否合理。如果不合理请告知用户并重复提问"
+        - id: 9d7b6f8e-82fd-4817-bb31-7494f62c9d18
+          role: user
+          text: 不要输出任何思考过程、分析步骤或解释性内容。
+        selected: false
+        title: 表单内容询问
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: llm
+      position:
+        x: 378
+        y: 142.96856683026678
+      positionAbsolute:
+        x: 378
+        y: 142.96856683026678
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1748433687461.cleaned_text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 103
+      id: answer
+      position:
+        x: 658.0000067819337
+        y: 265.8588006903617
+      positionAbsolute:
+        x: 658.0000067819337
+        y: 265.8588006903617
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - WxJYHs9BuSiGu7QLsfficinQAoVQhOaL35XLtOp1geNG2lICMASY0wyQu8phu5Ge
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: weighted_score
+          reranking_model:
+            model: gte-rerank
+            provider: langgenius/tongyi/tongyi
+          score_threshold: 0.7
+          top_k: 1
+          weights:
+            keyword_setting:
+              keyword_weight: 0
+            vector_setting:
+              embedding_model_name: qwen3:14b
+              embedding_provider_name: ollama
+              vector_weight: 1
+        query_variable_selector:
+        - '1748345844819'
+        - form_name
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1748348449946'
+      position:
+        x: 61.524404562941754
+        y: 142.96856683026678
+      positionAbsolute:
+        x: 61.524404562941754
+        y: 142.96856683026678
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-417
+            key: ''
+            type: text
+            value: '{{#1748588286497.result#}}'
+          type: json
+        desc: ''
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 从server抽出form文档
+        type: http-request
+        url: http://192.168.18.36:8080/api/fill-form
+        variables: []
+      height: 138
+      id: '1748350650583'
+      position:
+        x: 943.0990958514353
+        y: -71.49214451604567
+      positionAbsolute:
+        x: 943.0990958514353
+        y: -71.49214451604567
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1748699824262.text#}}'
+        desc: ''
+        selected: false
+        title: 回复form文档
+        type: answer
+        variables: []
+      height: 103
+      id: '1748350879064'
+      position:
+        x: 956.7405451152349
+        y: 276.0290858169248
+      positionAbsolute:
+        x: 956.7405451152349
+        y: 276.0290858169248
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "\nimport re\ndef main(arg1: str) -> dict:\n    # 使用正则提取 SQL 语句\n  \
+          \  cleaned_text = re.sub(r'<details\\b[^>]*>.*?</details>', '', arg1, re.DOTALL)\n\
+          \    cleaned_text = '\\n'.join(line for line in cleaned_text.splitlines()\
+          \ if line.strip())\n    return {\n        \"cleaned_text\": cleaned_text\n\
+          \    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          cleaned_text:
+            children: null
+            type: string
+        selected: false
+        title: 去掉think部分
+        type: code
+        variables:
+        - value_selector:
+          - llm
+          - text
+          variable: arg1
+      height: 53
+      id: '1748433687461'
+      position:
+        x: 378
+        y: 265.8588006903617
+      positionAbsolute:
+        x: 378
+        y: 265.8588006903617
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: 785e7747-6e74-4459-a3a9-155310cc477d
+            value: 调查结束
+            varType: string
+            variable_selector:
+            - llm
+            - text
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 125
+      id: '1748563945064'
+      position:
+        x: 658.0000067819337
+        y: 99.88842965410993
+      positionAbsolute:
+        x: 658.0000067819337
+        y: 99.88842965410993
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "import json\ndef main(arg1: str) -> dict:\n    data = json.loads(arg1)\
+          \  # 将字符串转为字典\n    base_url = \"http://192.168.18.36:8080\"\n    download_path\
+          \ = data.get(\"download_url\", \"\")\n    \n    if download_path:\n    \
+          \    full_url = base_url + download_path\n        button_html = f'''\n<a\
+          \ href=\"{full_url}\" target=\"_blank\">\n  <button style=\"padding: 10px\
+          \ 20px; font-size: 16px; background-color: #4CAF50; color: white; border:\
+          \ none; border-radius: 5px; cursor: pointer;\">\n    please download file:{download_path}\n\
+          \  </button>\n</a>\n'''\n    else:\n        button_html = \"<p>没有可用的下载链接。</p>\"\
+          \n    \n    return {\n        \"result\": button_html.strip()\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 取得文件链接
+        type: code
+        variables:
+        - value_selector:
+          - '1748350650583'
+          - body
+          variable: arg1
+      height: 53
+      id: '1748583981526'
+      position:
+        x: 943.0990958514353
+        y: 88.24341748556176
+      positionAbsolute:
+        x: 943.0990958514353
+        y: 88.24341748556176
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "\ndef main(arg1: str) -> dict:\n    match=arg1.replace(\"调查结束\", \"\
+          \").replace(\"```json\", \"\").replace(\"```\", \"\").replace(\"\\n\", \"\
+          \")\n    return {\n        \"result\": match ,\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 去掉json标签
+        type: code
+        variables:
+        - value_selector:
+          - llm
+          - text
+          variable: arg1
+      height: 53
+      id: '1748588286497'
+      position:
+        x: 943.0990958514353
+        y: -135.0929373842367
+      positionAbsolute:
+        x: 943.0990958514353
+        y: -135.0929373842367
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1748350650583'
+          - body
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen3-235b-a22b
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: af99ca37-9f6c-4770-af85-027322f05455
+          role: system
+          text: '请用markdown 格式，提取主要信息回复给用户，有委婉的语气组织文字。排版要求简洁美观。
+
+            文字内容是：{{#context#}}'
+        - id: f6efc990-59af-48e8-99be-cf151f84521a
+          role: user
+          text: '不要输出任何思考过程、分析步骤或解释性内容。
+
+            文件下载地址要拼上 http://192.168.18.36:8080
+
+            回复内容样例：
+
+            填写信息表结果
+
+            状态: 表单填写成功 ✅
+
+            操作时间: 2025-05-31 22:06:00
+
+            下载地址: 点击下载填写后的文件
+
+            如需有问题请联系CH73.'
+        selected: false
+        title: 信息回复
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1748699824262'
+      position:
+        x: 950.6776787757685
+        y: 152.47979844757756
+      positionAbsolute:
+        x: 950.6776787757685
+        y: 152.47979844757756
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        classes:
+        - id: '1'
+          name: 用户想要填写表单，或者提供了关于表单的回答，表单内容是：{{#1748797660046.output#}}
+        - id: '2'
+          name: 用户想要获取表单模板
+        - id: '1748794857495'
+          name: 用户的其他需求
+        desc: ''
+        instruction: ''
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen3-235b-a22b
+          provider: langgenius/tongyi/tongyi
+        query_variable_selector:
+        - '1748345844819'
+        - sys.query
+        selected: false
+        title: 问题分类器
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 243
+      id: '1748794705793'
+      position:
+        x: 61.524404562941754
+        y: 365.469161289856
+      positionAbsolute:
+        x: 61.524404562941754
+        y: 365.469161289856
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-66
+            key: ''
+            type: text
+            value: '{"formName":"{{#1748345844819.form_name#}}"}'
+          type: json
+        desc: ''
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 获取表单模板
+        type: http-request
+        url: http://192.168.18.36:8080/api/template
+        variables: []
+      height: 138
+      id: '1748794909275'
+      position:
+        x: 350.1423814684655
+        y: 417.2210641208228
+      positionAbsolute:
+        x: 350.1423814684655
+        y: 417.2210641208228
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1748794909275'
+          - body
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen3-235b-a22b
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: af99ca37-9f6c-4770-af85-027322f05455
+          role: system
+          text: '请用markdown 格式，提取主要信息回复给用户，有委婉的语气组织文字。排版要求简洁美观。
+
+            文字内容是：{{#context#}}'
+        - id: f6efc990-59af-48e8-99be-cf151f84521a
+          role: user
+          text: '不要输出任何思考过程、分析步骤或解释性内容。
+
+            文件下载地址要拼上 http://192.168.18.36:8080
+
+            回复内容样例：
+
+            这是您需要的{{#1748345844819.form_name#}}表单
+
+            操作时间: 2025-05-31 22:06:00
+
+            下载地址: 点击下载填写后的文件
+
+            如需有问题请联系CH73.'
+        selected: false
+        title: 信息回复
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17487950265870'
+      position:
+        x: 658.0000067819337
+        y: 436.8543087769132
+      positionAbsolute:
+        x: 658.0000067819337
+        y: 436.8543087769132
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#17487950265870.text#}}'
+        desc: ''
+        selected: false
+        title: 回复form模板
+        type: answer
+        variables: []
+      height: 103
+      id: '1748795164275'
+      position:
+        x: 962.0000067819337
+        y: 436.8543087769132
+      positionAbsolute:
+        x: 962.0000067819337
+        y: 436.8543087769132
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1748795759854.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 4
+        type: answer
+        variables: []
+      height: 103
+      id: '1748795296107'
+      position:
+        x: 672.2460957393329
+        y: 608.5316911529058
+      positionAbsolute:
+        x: 672.2460957393329
+        y: 608.5316911529058
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1748348449946'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen3-235b-a22b
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: f00888e0-e2cc-4741-be1b-1fe053c3bf0f
+          role: system
+          text: '你是一个聊天机器人，你要介绍一下下面这些你能帮用户做的事情：
+
+            1.你可以提供表单模板给用户
+
+            2.你可以帮用户填写表单
+
+            用户选择的表单是：{{#1748345844819.form_name#}}
+
+            表单内容是：{{#context#}}
+
+            不需要显示具体的表单内容'
+        - id: b7d7bc9a-ebae-4e5b-9281-23c344fbc9f1
+          role: user
+          text: 不要输出任何思考过程、分析步骤或解释性内容。
+        selected: false
+        title: 给用户介绍功能
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1748795759854'
+      position:
+        x: 350.1423814684655
+        y: 608.5316911529058
+      positionAbsolute:
+        x: 350.1423814684655
+        y: 608.5316911529058
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: 模板转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1748348449946'
+          - result
+          variable: arg1
+      height: 53
+      id: '1748797660046'
+      position:
+        x: 61.524404562941754
+        y: 257.8812432728466
+      positionAbsolute:
+        x: 61.524404562941754
+        y: 257.8812432728466
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: 244.42626643387268
+      y: 122.59676778797166
+      zoom: 0.5743491670649519
