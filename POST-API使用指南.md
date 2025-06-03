@@ -306,3 +306,23 @@ Test-PostAPI -FormName "不存在的表单"
 ```
 
 现在您可以使用POST方法来查询表单模板信息了！🎉 
+
+## 操作总结：
+
+1. ✅ **检查状态**：`git status` - 确认 `Form_fill_ver1.0.yml` 是未跟踪的新文件
+2. ✅ **添加文件**：`git add Form_fill_ver1.0.yml` - 将文件添加到暂存区
+3. ✅ **提交更改**：`git commit -m "添加Form_fill_ver1.0.yml配置文件"` - 创建提交
+4. ✅ **推送到远程**：`git push` - 同步到GitHub仓库
+
+您的新文件 `Form_fill_ver1.0.yml` 现在已经成功上传到 GitHub 仓库 `https://github.com/xingyun-New/FormFillAPI.git` 了！
+
+## 快速参考：以后添加新文件的流程
+
+```powershell
+git add 文件名           # 添加单个文件
+# 或者
+git add .              # 添加所有新文件和修改的文件
+
+git commit -m "提交说明"  # 提交更改
+git push               # 推送到远程仓库
+```
