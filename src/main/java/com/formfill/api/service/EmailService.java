@@ -12,13 +12,15 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
 
 /**
  * 邮件发送服务
@@ -34,12 +36,6 @@ public class EmailService {
     @Autowired
     private EmailConfig emailConfig;
     
-    private final WebClient webClient;
-    
-    public EmailService() {
-        this.webClient = WebClient.builder().build();
-    }
-    
     /**
      * 发送带附件的邮件
      */
@@ -47,9 +43,9 @@ public class EmailService {
         try {
             logger.info("开始发送邮件，表单名称: {}, 下载链接: {}", request.getFormName(), request.getDownloadUrl());
             
-            // 1. 下载附件
-            byte[] attachmentData = downloadFile(request.getDownloadUrl());
-            String fileName = extractFileNameFromUrl(request.getDownloadUrl());
+            // 1. 读取本地文件
+            byte[] attachmentData = readLocalFile(request.getDownloadUrl());
+            String fileName = extractFileNameFromPath(request.getDownloadUrl());
             
             // 2. 生成邮件内容
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -78,44 +74,52 @@ public class EmailService {
     }
     
     /**
-     * 从URL下载文件
+     * 从本地output目录读取文件
      */
-    private byte[] downloadFile(String downloadUrl) {
+    private byte[] readLocalFile(String downloadPath) {
         try {
-            logger.info("正在下载文件: {}", downloadUrl);
+            // 从路径中提取文件名
+            String fileName = extractFileNameFromPath(downloadPath);
             
-            Mono<byte[]> mono = webClient.get()
-                    .uri(downloadUrl)
-                    .retrieve()
-                    .bodyToMono(byte[].class);
+            // 构建完整的文件路径
+            Path filePath = Paths.get("output", fileName);
             
-            byte[] data = mono.block();
+            logger.info("正在读取本地文件: {}", filePath.toString());
             
-            if (data == null || data.length == 0) {
-                throw new RuntimeException("下载的文件为空");
+            // 检查文件是否存在
+            if (!Files.exists(filePath)) {
+                throw new RuntimeException("文件不存在: " + filePath.toString());
             }
             
-            logger.info("文件下载成功，大小: {} bytes", data.length);
+            // 读取文件内容
+            byte[] data = Files.readAllBytes(filePath);
+            
+            if (data.length == 0) {
+                throw new RuntimeException("文件为空: " + filePath.toString());
+            }
+            
+            logger.info("文件读取成功，大小: {} bytes", data.length);
             return data;
             
-        } catch (Exception e) {
-            logger.error("文件下载失败: {}", e.getMessage(), e);
-            throw new RuntimeException("文件下载失败: " + e.getMessage());
+        } catch (IOException e) {
+            logger.error("文件读取失败: {}", e.getMessage(), e);
+            throw new RuntimeException("文件读取失败: " + e.getMessage());
         }
     }
     
     /**
-     * 从URL中提取文件名
+     * 从路径中提取文件名
      */
-    private String extractFileNameFromUrl(String url) {
+    private String extractFileNameFromPath(String path) {
         try {
-            String fileName = url.substring(url.lastIndexOf("/") + 1);
+            // 处理类似 "/api/download/文件名.xlsx" 的路径
+            String fileName = path.substring(path.lastIndexOf("/") + 1);
             if (fileName.contains("?")) {
                 fileName = fileName.substring(0, fileName.indexOf("?"));
             }
             return fileName.isEmpty() ? "attachment.xlsx" : fileName;
         } catch (Exception e) {
-            logger.warn("无法从URL提取文件名: {}", url);
+            logger.warn("无法从路径提取文件名: {}", path);
             return "attachment.xlsx";
         }
     }

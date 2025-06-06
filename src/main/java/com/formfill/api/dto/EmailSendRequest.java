@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class EmailSendRequest {
     
     @NotBlank(message = "下载链接不能为空")
-    @Pattern(regexp = "^https?://.*", message = "下载链接格式不正确")
+    @Pattern(regexp = "^(https?://.*|/api/download/.*)$", message = "下载链接格式不正确，应为HTTP/HTTPS URL或本地路径")
     @JsonProperty("download_url")
     private String downloadUrl;
     
