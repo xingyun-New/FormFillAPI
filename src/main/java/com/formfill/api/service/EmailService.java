@@ -41,26 +41,72 @@ public class EmailService {
      */
     public EmailSendResponse sendEmailWithAttachment(EmailSendRequest request) {
         try {
-            logger.info("开始发送邮件，表单名称: {}, 下载链接: {}", request.getFormName(), request.getDownloadUrl());
+            logger.info("开始发送邮件，表单名称: {}, 下载链接: {}, 收件人: {}", 
+                request.getFormName(), request.getDownloadUrl(), request.getMailTo());
             
-            // 1. 读取本地文件
-            byte[] attachmentData = readLocalFile(request.getDownloadUrl());
-            String fileName = extractFileNameFromPath(request.getDownloadUrl());
+            byte[] attachmentData = null;
+            String fileName = null;
+            
+            // 1. 如果有下载链接，则读取本地文件作为附件
+            if (request.getDownloadUrl() != null && !request.getDownloadUrl().trim().isEmpty()) {
+                attachmentData = readLocalFile(request.getDownloadUrl());
+                fileName = extractFileNameFromPath(request.getDownloadUrl());
+                logger.info("附件准备完成: {}", fileName);
+            } else {
+                logger.info("未提供下载链接，将发送不带附件的邮件");
+            }
             
             // 2. 生成邮件内容
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            String subject = generateEmailSubject(request.getFormName(), timestamp);
-            String content = generateEmailContent(request.getFormName(), request.getFormStatus(), timestamp);
             
-            // 3. 发送邮件
-            sendMail(emailConfig.getRecipients(), subject, content, fileName, attachmentData);
+            // 使用请求中的邮件标题，如果没有则使用默认模板
+            String subject;
+            if (request.getMailTitle() != null && !request.getMailTitle().trim().isEmpty()) {
+                subject = request.getMailTitle();
+            } else {
+                // 如果没有自定义标题，使用formName生成默认标题，如果formName也为空，使用通用标题
+                String formName = (request.getFormName() != null && !request.getFormName().trim().isEmpty()) 
+                    ? request.getFormName() : "系统通知";
+                subject = generateEmailSubject(formName, timestamp);
+            }
             
-            logger.info("邮件发送成功，收件人: {}, 主题: {}", emailConfig.getRecipients(), subject);
+            // 使用请求中的邮件内容，如果没有则使用默认模板
+            String content;
+            if (request.getMailContent() != null && !request.getMailContent().trim().isEmpty()) {
+                content = request.getMailContent();
+            } else {
+                // 如果没有自定义内容，使用formName和formStatus生成默认内容
+                String formName = (request.getFormName() != null && !request.getFormName().trim().isEmpty()) 
+                    ? request.getFormName() : "系统通知";
+                String formStatus = (request.getFormStatus() != null && !request.getFormStatus().trim().isEmpty()) 
+                    ? request.getFormStatus() : "Completed";
+                content = generateEmailContent(formName, formStatus, timestamp);
+            }
+            
+            // 3. 准备收件人列表
+            String[] recipients = {request.getMailTo()};
+            String[] ccRecipients = null;
+            if (request.getMailCc() != null && !request.getMailCc().trim().isEmpty()) {
+                ccRecipients = new String[]{request.getMailCc()};
+            }
+            
+            // 4. 发送邮件
+            sendMail(recipients, ccRecipients, subject, content, fileName, attachmentData);
+            
+            logger.info("邮件发送成功，收件人: {}, 抄送: {}, 主题: {}", 
+                request.getMailTo(), request.getMailCc(), subject);
+            
+            // 构建收件人列表用于响应
+            java.util.List<String> recipientList = new java.util.ArrayList<>();
+            recipientList.add(request.getMailTo());
+            if (request.getMailCc() != null && !request.getMailCc().trim().isEmpty()) {
+                recipientList.add(request.getMailCc() + " (CC)");
+            }
             
             return EmailSendResponse.success(
                 "邮件发送成功",
                 subject,
-                emailConfig.getRecipients(),
+                recipientList,
                 fileName
             );
             
@@ -166,7 +212,7 @@ public class EmailService {
     /**
      * 发送邮件
      */
-    private void sendMail(List<String> recipients, String subject, String content, 
+    private void sendMail(String[] recipients, String[] ccRecipients, String subject, String content, 
                          String fileName, byte[] attachmentData) throws MessagingException, UnsupportedEncodingException {
         
         MimeMessage message = mailSender.createMimeMessage();
@@ -183,7 +229,12 @@ public class EmailService {
         }
         
         // 设置收件人
-        helper.setTo(recipients.toArray(new String[0]));
+        helper.setTo(recipients);
+        
+        // 设置抄送人
+        if (ccRecipients != null && ccRecipients.length > 0) {
+            helper.setCc(ccRecipients);
+        }
         
         // 设置邮件主题和内容
         helper.setSubject(subject);

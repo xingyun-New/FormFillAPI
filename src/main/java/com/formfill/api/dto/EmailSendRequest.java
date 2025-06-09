@@ -2,6 +2,7 @@ package com.formfill.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Email;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -9,16 +10,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class EmailSendRequest {
     
-    @NotBlank(message = "下载链接不能为空")
     @Pattern(regexp = "^(https?://.*|/api/download/.*)$", message = "下载链接格式不正确，应为HTTP/HTTPS URL或本地路径")
     @JsonProperty("download_url")
     private String downloadUrl;
     
-    @NotBlank(message = "表单名称不能为空")
     private String formName;
     
-    @NotBlank(message = "表单状态不能为空")
     private String formStatus;
+    
+    private String mailContent;
+    
+    private String mailTitle;
+    
+    @NotBlank(message = "邮件收件人不能为空")
+    @Email(message = "邮件收件人格式不正确")
+    private String mailTo;
+    
+    @Email(message = "邮件抄送格式不正确")
+    private String mailCc;
     
     public EmailSendRequest() {}
     
@@ -52,12 +61,48 @@ public class EmailSendRequest {
         this.formStatus = formStatus;
     }
     
+    public String getMailContent() {
+        return mailContent;
+    }
+    
+    public void setMailContent(String mailContent) {
+        this.mailContent = mailContent;
+    }
+    
+    public String getMailTitle() {
+        return mailTitle;
+    }
+    
+    public void setMailTitle(String mailTitle) {
+        this.mailTitle = mailTitle;
+    }
+    
+    public String getMailTo() {
+        return mailTo;
+    }
+    
+    public void setMailTo(String mailTo) {
+        this.mailTo = mailTo;
+    }
+    
+    public String getMailCc() {
+        return mailCc;
+    }
+    
+    public void setMailCc(String mailCc) {
+        this.mailCc = mailCc;
+    }
+    
     @Override
     public String toString() {
         return "EmailSendRequest{" +
                 "downloadUrl='" + downloadUrl + '\'' +
                 ", formName='" + formName + '\'' +
                 ", formStatus='" + formStatus + '\'' +
+                ", mailContent='" + mailContent + '\'' +
+                ", mailTitle='" + mailTitle + '\'' +
+                ", mailTo='" + mailTo + '\'' +
+                ", mailCc='" + mailCc + '\'' +
                 '}';
     }
 } 
